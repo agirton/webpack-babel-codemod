@@ -70,7 +70,7 @@ export default function transformer(file, api) {
     })
     .replaceWith(exp => getExpressionArgumentValue(exp).argValue)
     .toSource({ quote: 'single' });
-};
+}
 
 function findBody(node) {
   // traverse up the tree until end, or find body
