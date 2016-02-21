@@ -26,7 +26,7 @@
  *
  */
 
-module.exports = function transformer(file, api) {
+export default function transformer(file, api) {
   const j = api.jscodeshift;
 
   // split if value is a dynamic Webpack require.
