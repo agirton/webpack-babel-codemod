@@ -1,4 +1,4 @@
-## Webpack codemod
+## Webpack codemod [![Build Status](https://travis-ci.org/agirton/webpack-babel-codemod.svg?branch=master)](https://travis-ci.org/agirton/webpack-babel-codemod)
 
 When using Babel 5 you could import another js module that's es2015, but you use the commonjs format like so:
 
