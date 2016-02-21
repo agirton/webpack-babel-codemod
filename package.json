@@ -8,7 +8,11 @@
   },
   "keywords": [],
   "author": "Adam Girton <adam.girton@me.com> (https://github.com/agirton)",
-  "license": "ISC",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agirton/webpack-babel-codemod.git"
+  },
   "ava": {
     "files": [
       "tests/*-test.js"
