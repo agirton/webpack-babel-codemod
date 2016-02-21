@@ -16,7 +16,7 @@ However under the hood Babel converted this require statement to be, `require('f
 
 For example:
 ```javascript
-from:
+// from:
 import 'foo'
 import bar from 'bar'
 
@@ -25,7 +25,7 @@ const baz = {
   norf: require('bundle?lazy!norf')
 }
 
-to:
+// to:
 import 'foo'
 import bar from 'bar'
 
