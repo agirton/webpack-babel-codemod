@@ -20,46 +20,27 @@
  * import norf from 'bundle?lazy!norf';
  *
  * const baz = {
- *   qux: qux,
- *   norf: norf
+ *   qux,
+ *   norf
  * }
  *
  */
 
 export default function transformer(file, api) {
   const j = api.jscodeshift;
-
-  // split if value is a dynamic Webpack require.
-  const valueFromWebpackDynamic = val => {
-    let values = val.split('!');
-    if (val.indexOf('?') > 0 && values.length > 2) {
-      values = val.split('?');
-    }
-    return values[values.length - 1];
-  }
-
-  const getExpressionArgumentValue = exp => {
-    const name = exp.value.arguments[0].value;
-    return {
-      argValue: valueFromWebpackDynamic(name),
-      name
-    }
-  }
-
-  return j(file.source)
-    .find(j.CallExpression,  {
-      type: 'CallExpression',
-      callee: {
-        name: 'require'
-      }
-    })
-    .forEach(exp => {
-      const { argValue, name } = getExpressionArgumentValue(exp);
-      const argName = j.identifier(argValue);
+  const root = j(file.source);
+  return root
+    .find(j.Property)
+    .forEach(nodePath => {
+      const { value: { value, key } } = nodePath;
+      const { name } = key;
+      const argName = j.identifier(name);
       const variable = j.importDefaultSpecifier(argName);
-      const declaration = j.importDeclaration([variable], j.literal(name));
+      const declaration = j.importDeclaration(
+        [variable], j.literal(value.arguments[0].value)
+      );
 
-      const { value: nodes } = findBody(exp);
+      const { value: nodes } = findBody(nodePath);
       const index = findLastIndex(nodes, el => {
         if (el.type === 'ImportDeclaration') {
           return true;
@@ -68,7 +49,7 @@ export default function transformer(file, api) {
       });
       nodes.splice(index + 1, 0, declaration);
     })
-    .replaceWith(exp => getExpressionArgumentValue(exp).argValue)
+    .replaceWith(nodePath => nodePath.value.key.name)
     .toSource({ quote: 'single' });
 }
 
