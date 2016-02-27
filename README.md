@@ -33,8 +33,8 @@ import qux from 'bundle?lazy!qux';
 import norf from 'bundle?lazy!norf';
 
 const baz = {
-  qux: qux,
-  norf: norf
+  qux,
+  norf
 }
 ```
 
